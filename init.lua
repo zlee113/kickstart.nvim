@@ -87,7 +87,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -152,11 +151,42 @@ require('lazy').setup({
   -- Use `opts = {}` to force a plugin to be loaded.
   --
   -- ADDED PLUGIN HERE:
+
+  -- Lazy git plugin
+  {
+    'kdheepak/lazygit.nvim',
+    cmd = {
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
+    },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    keys = {
+      { '<leader>lg', '<cmd>LazyGit<CR>', desc = 'LazyGit' },
+    },
+    config = function()
+      vim.g.lazygit_floating_window_winblend = 0 -- transparency of floating window
+      vim.g.lazygit_floating_window_scaling_factor = 0.9 -- scaling factor for floating window
+      vim.g.lazygit_floating_window_border_chars = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' } -- customize lazygit popup window border characters
+      vim.g.lazygit_floating_window_use_plenary = 0 -- use plenary.nvim to manage floating window if available
+      vim.g.lazygit_use_neovim_remote = 1 -- fallback to 0 if neovim-remote is not installed
+
+      vim.g.lazygit_use_custom_config_file_path = 0 -- config file path is evaluated if this value is 1
+      vim.g.lazygit_config_file_path = '' -- custom config file path
+      -- OR
+      vim.g.lazygit_config_file_path = {} -- table of custom config file paths
+    end,
+  },
+
+  -- Toggles shell plugin2
   {
     'akinsho/toggleterm.nvim',
     version = '*',
     config = true,
-    tag = '*',
     keys = {
       {
         '<leader>sh',
